@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1082762983465",
+    "project_id": "instagram-clone-f3f4c",
+    "storage_bucket": "instagram-clone-f3f4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082762983465:android:8ceb841283f45980bd4438",
+        "android_client_info": {
+          "package_name": "com.example.instagram_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFOx-H9A1ZmsncklNoWXWETI4gd7PrClE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
