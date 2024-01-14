@@ -7,6 +7,9 @@ import 'package:instagram_clone/assets/colors.dart';
 import 'package:instagram_clone/assets/constants.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/resources/utils.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/responsive.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/widgets/textfield_input.dart';
 
@@ -58,7 +61,12 @@ class _SignupScreenState extends State<SignupScreen> {
       showSnackBar(res, context);
     } else {
       // ignore: use_build_context_synchronously
-      showSnackBar('You Have Successfully Registerd.', context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const ResponsiveLayout(
+                  webScreenLayout: WebScreenLayout(),
+                  mobileScreenLayout: MobileScreenLayout())));
     }
     setState(() {
       isLoading = false;
