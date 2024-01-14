@@ -7,6 +7,7 @@ import 'package:instagram_clone/assets/colors.dart';
 import 'package:instagram_clone/assets/constants.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/resources/utils.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/widgets/textfield_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   Uint8List? userImage;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -36,6 +38,30 @@ class _SignupScreenState extends State<SignupScreen> {
     Uint8List? img = await pickImage(ImageSource.gallery);
     setState(() {
       userImage = img;
+    });
+  }
+
+  signupUser() async {
+    setState(() {
+      isLoading = true;
+    });
+    var res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _pwdController.text,
+        username: _userNameController.text,
+        bio: _bioController.text,
+        file: userImage!);
+    print(res);
+
+    if (res != 'success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(res, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      showSnackBar('You Have Successfully Registerd.', context);
+    }
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -120,33 +146,21 @@ class _SignupScreenState extends State<SignupScreen> {
             height: 24,
           ),
           GestureDetector(
-            onTap: () async {
-              var res = await AuthMethods().signUpUser(
-                  email: _emailController.text,
-                  password: _pwdController.text,
-                  username: _userNameController.text,
-                  bio: _bioController.text,
-                  file: userImage!);
-              print(res);
-
-              if (res != 'success') {
-                // ignore: use_build_context_synchronously
-                showSnackBar(res, context);
-              } else {
-                // ignore: use_build_context_synchronously
-                showSnackBar('You Have Successfully Registerd.', context);
-              }
-            },
-            child: Container(
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: ShapeDecoration(
-                  color: blueColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4))),
-              child: const Text(AppConstatns.registerText),
-            ),
+            onTap: () => signupUser(),
+            child: isLoading
+                ? const CircularProgressIndicator(
+                    color: Colors.white,
+                  )
+                : Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    decoration: ShapeDecoration(
+                        color: blueColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4))),
+                    child: const Text(AppConstatns.registerText),
+                  ),
           ),
           const SizedBox(
             height: 12,
@@ -166,7 +180,12 @@ class _SignupScreenState extends State<SignupScreen> {
                 width: 8,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginScreen()));
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: const Text(
