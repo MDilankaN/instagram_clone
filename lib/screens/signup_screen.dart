@@ -33,7 +33,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+    Uint8List? img = await pickImage(ImageSource.gallery);
     setState(() {
       userImage = img;
     });
@@ -74,7 +74,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   bottom: -5,
                   left: 80,
                   child: IconButton(
-                    onPressed: selectImage(),
+                    onPressed: () => selectImage(),
                     icon: const Icon(
                       Icons.add_a_photo,
                       color: Colors.white,
