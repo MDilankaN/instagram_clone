@@ -42,6 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Container(
         padding: const EdgeInsets.symmetric(
@@ -131,6 +132,9 @@ class _SignupScreenState extends State<SignupScreen> {
               if (res != 'success') {
                 // ignore: use_build_context_synchronously
                 showSnackBar(res, context);
+              } else {
+                // ignore: use_build_context_synchronously
+                showSnackBar('You Have Successfully Registerd.', context);
               }
             },
             child: Container(
