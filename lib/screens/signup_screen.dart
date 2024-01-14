@@ -1,8 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/assets/colors.dart';
 import 'package:instagram_clone/assets/constants.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/resources/utils.dart';
 import 'package:instagram_clone/widgets/textfield_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -17,6 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
+  Uint8List? userImage;
 
   @override
   void dispose() {
@@ -27,7 +32,12 @@ class _SignupScreenState extends State<SignupScreen> {
     super.dispose();
   }
 
-  selectImage() {}
+  selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      userImage = img;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +63,13 @@ class _SignupScreenState extends State<SignupScreen> {
           ),
           Stack(
             children: [
-              const CircleAvatar(
-                radius: 64,
-                backgroundImage: NetworkImage(
-                    'https://plus.unsplash.com/premium_photo-1670349265468-13aa73d01a95?q=80&w=1598&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-              ),
+              userImage != null
+                  ? CircleAvatar(
+                      radius: 64, backgroundImage: MemoryImage(userImage!))
+                  : const CircleAvatar(
+                      radius: 64,
+                      backgroundImage: NetworkImage(
+                          'https://img.freepik.com/premium-vector/account-icon-user-icon-vector-graphics_292645-552.jpg?w=740')),
               Positioned(
                   bottom: -5,
                   left: 80,
@@ -109,12 +121,17 @@ class _SignupScreenState extends State<SignupScreen> {
           GestureDetector(
             onTap: () async {
               var res = await AuthMethods().signUpUser(
-                email: _emailController.text,
-                password: _pwdController.text,
-                username: _userNameController.text,
-                bio: _bioController.text,
-              );
+                  email: _emailController.text,
+                  password: _pwdController.text,
+                  username: _userNameController.text,
+                  bio: _bioController.text,
+                  file: userImage!);
               print(res);
+
+              if (res != 'success') {
+                // ignore: use_build_context_synchronously
+                showSnackBar(res, context);
+              }
             },
             child: Container(
               width: double.infinity,
