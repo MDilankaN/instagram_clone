@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:instagram_clone/models/user.dart' as UserModal;
 import 'package:instagram_clone/resources/storage_methods.dart';
 
 class AuthMethods {
@@ -27,15 +28,19 @@ class AuthMethods {
 
         String profileImageUrl = await StorageMethods()
             .uploadImageToStorage('profileImages', file, true);
-        await _firestore.collection('users').doc(credential.user!.uid).set({
-          'username': username,
-          'uid': credential.user!.uid,
-          'email': email,
-          'bio': bio,
-          'followers': [],
-          'following': [],
-          'photoUrl': profileImageUrl
-        });
+
+        UserModal.User userObj = UserModal.User(
+            username: username,
+            uid: credential.user!.uid,
+            email: email,
+            bio: bio,
+            photoUrl: profileImageUrl,
+            followers: [],
+            following: []);
+        await _firestore
+            .collection('users')
+            .doc(credential.user!.uid)
+            .set(userObj.toJson());
         res = 'success';
       }
       return res;
