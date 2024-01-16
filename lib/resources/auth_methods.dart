@@ -73,4 +73,13 @@ class AuthMethods {
       return res = err.toString();
     }
   }
+
+  Future<UserModal.User> getUserDetails() async {
+    DocumentSnapshot docSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .get();
+    UserModal.User user = docSnap as UserModal.User;
+    return user;
+  }
 }
