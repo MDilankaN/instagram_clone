@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/assets/colors.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/provider/provider.dart';
-import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:provider/provider.dart';
 
 class MobileScreenLayout extends StatefulWidget {
@@ -12,11 +13,69 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
+  int page = 0;
+  late PageController pageController;
+
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  void navigationTapped(int page) {
+    pageController.jumpToPage(page);
+  }
+
+  void onPageChange(int pageNum) {
+    setState(() {
+      page = pageNum;
+    });
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
-      body: Center(child: Text(user.username.toString())),
+      body: PageView(
+        children: [
+          Text('Feed'),
+          Text('Search'),
+          Text('Add post'),
+          Text('Notification'),
+          Text('Profile'),
+        ],
+        controller: pageController,
+        onPageChanged: onPageChange,
+      ),
+      bottomNavigationBar: CupertinoTabBar(
+        backgroundColor: mobileBackgroundColor,
+        onTap: navigationTapped,
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+            Icons.home,
+            color: page == 0 ? primaryColor : secondaryColor,
+          )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.search,
+                  color: page == 1 ? primaryColor : secondaryColor)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.add,
+                  color: page == 2 ? primaryColor : secondaryColor)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.favorite,
+                  color: page == 3 ? primaryColor : secondaryColor)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person,
+                  color: page == 4 ? primaryColor : secondaryColor)),
+        ],
+      ),
     );
   }
 }
