@@ -8,4 +8,7 @@ class AppConstatns {
   static const String loginQuestion = 'Do have an account?';
   static const String registerText = 'Sign up';
   static const String loginText = 'Log in';
+  static const String addPostTitle = 'Post to';
+  static const String postTitle = 'Post';
+  static const String postHint = "Write a caption...";
 }
