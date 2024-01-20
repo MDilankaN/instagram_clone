@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class AddPostScreen extends StatefulWidget {
+  const AddPostScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
