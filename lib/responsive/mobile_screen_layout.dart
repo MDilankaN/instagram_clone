@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/assets/colors.dart';
+import 'package:instagram_clone/assets/global_vars.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/provider/provider.dart';
 import 'package:provider/provider.dart';
@@ -43,15 +44,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: PageView(
-        children: [
-          Text('Feed'),
-          Text('Search'),
-          Text('Add post'),
-          Text('Notification'),
-          Text('Profile'),
-        ],
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: onPageChange,
+        children: homeScreenItems,
       ),
       bottomNavigationBar: CupertinoTabBar(
         backgroundColor: mobileBackgroundColor,
